@@ -31,11 +31,13 @@ app.get('/json', function(req, res) {
 
 app.get('/ydsp/insertion_orders', function(req, res) {
     // Returns YDSP-like insertion order records.
+    console.log('Getting insertion orders.');
     res.json({insertion_orders: [
         {id: 0, name: "Hoefler & Co", advertiser: "Typography"},
         {id: 1, name: "Toyota Fall Campaign", advertiser: "Toyota"},
         {id: 2, name: "Microsoft Return to Office", advertiser: "Microsoft"},
-        {id: 3, name: "Framily Plans", advertiser: "AT&T"}
+        {id: 3, name: "Framily Plans", advertiser: "AT&T"},
+        {id: 4, name: "Like a Tiger", advertiser: "Orange Mobile"}
     ]});
 });
 
