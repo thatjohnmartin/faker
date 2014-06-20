@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 
 app.get('/', function(req, res) {
+    // Returns a list of all active routes.
     var routes = [];
     for(var verb in app.routes) {
         app.routes[verb].forEach(function(route) {
@@ -19,11 +20,23 @@ app.get('/', function(req, res) {
 });
 
 app.get('/hello', function(req, res) {
-    res.send('Hello World');
+    // A little bit of text.
+    res.send('Hello, world.');
 });
 
 app.get('/json', function(req, res) {
+    // A little bit of JSON.
     res.json({foo: 23, bar: "this is bar", baz: [1, 2, 3]});
+});
+
+app.get('/ydsp/insertion_orders', function(req, res) {
+    // Returns YDSP-like insertion order records.
+    res.json({insertion_orders: [
+        {id: 0, name: "Hoefler & Co", advertiser: "Typography"},
+        {id: 1, name: "Toyota Fall Campaign", advertiser: "Toyota"},
+        {id: 2, name: "Microsoft Return to Office", advertiser: "Microsoft"},
+        {id: 3, name: "Framily Plans", advertiser: "AT&T"}
+    ]});
 });
 
 var server = app.listen(3000, function() {
