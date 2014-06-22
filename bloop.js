@@ -54,7 +54,8 @@ var insertionOrders = [
     {id: 6, name: "MS Xbox KRS", advertiser: "Microsoft", status: 'active', percentGoal: 0.69},
     {id: 7, name: "MS Xbox One California Release", advertiser: "Microsoft", status: 'active', percentGoal: 0.99},
     {id: 8, name: "Nike World Cup Phase 2 2014 - UK", advertiser: "Nike", status: 'active', percentGoal: 0.23},
-    {id: 9, name: "Nike World Cup Phase 2 2014 - Asia", advertiser: "Nike", status: 'active', percentGoal: 0.33}
+    {id: 9, name: "Nike World Cup Phase 2 2014 - Asia", advertiser: "Nike", status: 'active', percentGoal: 0.33},
+    {id: 9, name: "Nike World Cup Phase 2 2014 - US", advertiser: "Nike", status: 'active', percentGoal: 0.31}
 ];
 
 app.get('/ydsp/insertion_orders', function(req, res) {
