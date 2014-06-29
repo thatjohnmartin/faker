@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var swig = require('swig');
+var _ = require('underscore');
 var app = express();
 
 app.engine('html', swig.renderFile);
@@ -70,19 +71,37 @@ app.get('/ydsp/insertion_orders', function(req, res) {
 // Methods for a fake Threadstore
 //
 
+var threadpressCollections = [
+  {id: 1001, handle: "threadpress.thatjohnmartin", title: "That John Martin"},
+  {id: 1002, handle: "threadpress.climbingnerd", title: "Climbing Nerd"},
+  {id: 1003, handle: "threadpress.countingoldphotons", title: "Counting Old Photons"},
+  {id: 1004, handle: "threadpress.thedish", title: "The Dish"},
+];
+
+var collectionRoot = 'threadpress.';
+
 app.get('/collection', function(req, res) {
-  // Collection get/search.
-  
+  // Collection search.
   var collections = [];
-  
-  if (req.query.handle == 'threadpress.*') {
-    collections = [
-      {handle: "threadpress.thatjohnmartin", title: "That John Martin"},
-      {handle: "threadpress.climbingnerd", title: "Climbing Nerd"}
-    ];
+  if (req.query.handle == collectionRoot + '*') {
+    collections = threadpressCollections;
   }
-  
   res.json({status: 'ok', collections: collections});
+});
+
+app.get('/collection/handle/:handle', function(req, res) {
+  // Collection get.  
+  var collection = null;
+  console.log(req.params.handle.substr(0, collectionRoot.length));
+  if (req.params.handle.substr(0, collectionRoot.length) == collectionRoot) {
+    collection = _.find(threadpressCollections, function(c) { return c.handle == req.params.handle; });
+  }
+  if (collection == null) {
+    res.json({status: 'error', message: 'Not found'});
+  }
+  else {
+    res.json({status: 'ok', collection: collection});
+  }
 });
 
 var port = Number(process.env.PORT || 5000);
