@@ -1,0 +1,9 @@
+<p>Available routes:</p>
+<ul style="list-style-type: none; padding-left: 20px">
+    {% for route in routes %}
+        <li>
+            {{ route.method }}
+            <a href="{{ route.path }}">{{ route.path }}</a>
+        </li>
+    {% endfor %}
+</ul>
