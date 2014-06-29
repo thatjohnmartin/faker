@@ -66,6 +66,25 @@ app.get('/ydsp/insertion_orders', function(req, res) {
   res.json({status: 'ok', insertionOrders: insertionOrders});
 });
 
+//
+// Methods for a fake Threadstore
+//
+
+app.get('/collection', function(req, res) {
+  // Collection get/search.
+  
+  var collections = [];
+  
+  if (req.query.handle == 'threadpress.*') {
+    collections = [
+      {handle: "threadpress.thatjohnmartin", title: "That John Martin"},
+      {handle: "threadpress.climbingnerd", title: "Climbing Nerd"}
+    ];
+  }
+  
+  res.json({status: 'ok', collections: collections});
+});
+
 var port = Number(process.env.PORT || 5000);
 var server = app.listen(port, function() {
   console.log('Listening on port %d', server.address().port);
