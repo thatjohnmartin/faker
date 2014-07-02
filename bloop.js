@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 var swig = require('swig');
 var _ = require('underscore');
@@ -7,6 +8,7 @@ var app = express();
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'static')));
+app.use(bodyParser.json())
 
 app.get('/', function(req, res) {
   // Returns a list of all active routes.
@@ -72,10 +74,10 @@ app.get('/ydsp/insertion_orders', function(req, res) {
 //
 
 var threadpressCollections = [
-  {id: 1001, handle: "threadpress.thatjohnmartin", title: "That John Martin"},
-  {id: 1002, handle: "threadpress.climbingnerd", title: "Climbing Nerd"},
-  {id: 1003, handle: "threadpress.countingoldphotons", title: "Counting Old Photons"},
-  {id: 1004, handle: "threadpress.thedish", title: "The Dish"},
+  {id: 1001, name: "threadpress.thatjohnmartin", title: "That John Martin"},
+  {id: 1002, name: "threadpress.climbingnerd", title: "Climbing Nerd"},
+  {id: 1003, name: "threadpress.countingoldphotons", title: "Counting Old Photons"},
+  {id: 1004, name: "threadpress.thedish", title: "The Dish"},
 ];
 
 var postBody1 = "Photo booth vinyl post-ironic stumptown. Vinyl lo-fi kogi ethical 8-bit +1. Cosby sweater put a bird on it Brooklyn \
@@ -116,20 +118,11 @@ var firstPagePosts = [
 
 var collectionRoot = 'threadpress.';
 
-app.get('/collection', function(req, res) {
-  // Search for a collection.
-  var collections = [];
-  if (req.query.handle == collectionRoot + '*') {
-    collections = threadpressCollections;
-  }
-  res.json({status: 'ok', collections: collections});
-});
-
-app.get('/collection/handle/:handle', function(req, res) {
+app.get('/collection/name/:name', function(req, res) {
   // Get a collection.  
   var collection = null;
-  if (req.params.handle.substr(0, collectionRoot.length) == collectionRoot) {
-    collection = _.find(threadpressCollections, function(c) { return c.handle == req.params.handle; });
+  if (req.params.name.substr(0, collectionRoot.length) == collectionRoot) {
+    collection = _.find(threadpressCollections, function(c) { return c.name == req.params.name; });
   }
   if (collection == null) {
     res.json({status: 'error', message: 'Not found'});
@@ -139,7 +132,19 @@ app.get('/collection/handle/:handle', function(req, res) {
   }
 });
 
-app.get('/thread/collection/:handle', function(req, res) {
+app.all('/collection/search', function(req, res) {
+  // Search for a collection.
+  var collections = [];
+  var query = req.param('query');
+  if (query) {
+    if (query._name && query._name['$regex'] && query._name['$regex'] == '^threadpress\..*') {
+      collections = threadpressCollections;
+    }
+  }
+  res.json({status: 'ok', collections: collections});
+});
+
+app.all('/post/search', function(req, res) {
   // Get a thread.
   var thread = {'posts': firstPagePosts};
   res.json({status: 'ok', thread: thread});
