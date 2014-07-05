@@ -10,6 +10,12 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.json())
 
+// simple logger
+app.use(function(req, res, next){
+  console.log('%s %s', req.method, req.url);
+  next();
+});
+
 app.get('/', function(req, res) {
   // Returns a list of all active routes.
   var routes = [];
@@ -40,7 +46,6 @@ app.get('/json', function(req, res) {
 
 app.get('/ydsp/login', function(req, res) {
   // Simple login method.
-  console.log('Attemping YDSP login.');
   if (req.query.username == 'jmartin') {
     res.json({status: 'ok', message: 'Signed in user ' + req.query.username});
   }
@@ -65,7 +70,6 @@ var insertionOrders = [
 
 app.get('/ydsp/insertion_orders', function(req, res) {
   // Returns YDSP-like insertion order records.
-  console.log('Getting insertion orders.');
   res.json({status: 'ok', insertionOrders: insertionOrders});
 });
 
@@ -119,7 +123,7 @@ var firstPagePosts = [
 var collectionRoot = 'threadpress.';
 
 app.get('/collection/name/:name', function(req, res) {
-  // Get a collection.  
+  // Get a collection.
   var collection = null;
   if (req.params.name.substr(0, collectionRoot.length) == collectionRoot) {
     collection = _.find(threadpressCollections, function(c) { return c.name == req.params.name; });
