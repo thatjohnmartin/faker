@@ -139,6 +139,8 @@ var firstPagePosts = [
     created: '2014-06-03', markup: postBody2},
 ];
 
+var nextPostId = 3000;
+
 var collectionRoot = 'threadpress.';
 
 app.get('/collection/name/:name', function(req, res) {
@@ -155,7 +157,7 @@ app.get('/collection/name/:name', function(req, res) {
   }
 });
 
-app.all('/collection/search', function(req, res) {
+app.post('/collection/search', function(req, res) {
   // Search for a collection.
   var collections = [];
   var query = req.param('query');
@@ -167,10 +169,22 @@ app.all('/collection/search', function(req, res) {
   res.json({status: 'ok', collections: collections});
 });
 
-app.all('/post/search', function(req, res) {
+app.post('/post/search', function(req, res) {
   // Get a thread.
   var thread = {'posts': firstPagePosts};
   res.json({status: 'ok', thread: thread});
+});
+
+app.put('/post/collection/:name/type/:type/', function(req, res) {
+  // Add a new post.
+  firstPagePosts.unshift({
+    id: nextPostId++,
+    title: req.body.title,
+    markup: req.body.markup,
+    tags: req.body.tags,
+    created: '2014-07-07'
+  });
+  res.json({status: 'ok'});
 });
 
 var port = Number(process.env.PORT || 5000);
