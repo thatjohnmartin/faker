@@ -8,7 +8,7 @@ var app = express();
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'static')));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 // simple logger
 app.use(function(req, res, next){
