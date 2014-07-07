@@ -68,9 +68,14 @@ var insertionOrders = [
   {id: 9, name: "Nike World Cup Phase 2 2014 - US", advertiser: "Nike", status: 'active', percentGoal: 0.31}
 ];
 
-app.get('/ydsp/insertion_orders', function(req, res) {
+app.get('/ydsp/insertionorders', function(req, res) {
   // Returns YDSP-like insertion order records.
   res.json({status: 'ok', insertionOrders: insertionOrders});
+});
+
+app.get('/ydsp/insertionorders/:id', function(req, res) {
+  // Returns a single YDSP-like insertion order.
+  res.json({status: 'ok', insertionOrder: _.find(insertionOrders, function(i) { return i.id == parseInt(req.params.id); })});
 });
 
 //
