@@ -65,7 +65,14 @@ var insertionOrders = [
   {id: 7, name: "MS Xbox One California Release", advertiser: "Microsoft", status: 'active', percentGoal: 0.99},
   {id: 8, name: "Nike World Cup Phase 2 2014 - UK", advertiser: "Nike", status: 'active', percentGoal: 0.23},
   {id: 9, name: "Nike World Cup Phase 2 2014 - Asia", advertiser: "Nike", status: 'active', percentGoal: 0.33},
-  {id: 9, name: "Nike World Cup Phase 2 2014 - US", advertiser: "Nike", status: 'active', percentGoal: 0.31}
+  {id: 10, name: "Nike World Cup Phase 2 2014 - US", advertiser: "Nike", status: 'active', percentGoal: 0.31}
+];
+
+var lineItems = [
+  {id: 100, name: "Male, 25-34 UK", status: 'active', percentGoal: 0.82},
+  {id: 101, name: "Male, 35-54 UK", status: 'active', percentGoal: 0.52},
+  {id: 102, name: "Male, US + Canada", status: 'active', percentGoal: 0.07},
+  {id: 103, name: "Female, UK", status: 'active', percentGoal: 0.96}
 ];
 
 app.get('/ydsp/insertionorders', function(req, res) {
@@ -76,6 +83,11 @@ app.get('/ydsp/insertionorders', function(req, res) {
 app.get('/ydsp/insertionorders/:id', function(req, res) {
   // Returns a single YDSP-like insertion order.
   res.json({status: 'ok', insertionOrder: _.find(insertionOrders, function(i) { return i.id == parseInt(req.params.id); })});
+});
+
+app.get('/ydsp/insertionorders/:id/lineitems', function(req, res) {
+  // Returns a list of line item records for the given insertion order.
+  res.json({status: 'ok', lineItems: lineItems});
 });
 
 //
